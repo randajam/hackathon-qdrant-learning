@@ -1,0 +1,1 @@
+# hackathon-qdrant-learning
