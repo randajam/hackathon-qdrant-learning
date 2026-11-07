@@ -13,7 +13,7 @@ from app.services.rag_service import RAGService
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.reranker = FlagReranker(settings.reranker_model, use_fp16=True)
+    app.state.reranker = FlagReranker(settings.reranker_model, use_fp16=False)
     app.state.model = BGEM3FlagModel(
         settings.embedding_model, use_fp16=False, normalize=True
     )
@@ -24,7 +24,7 @@ async def lifespan(app: FastAPI):
         generate_fn=generate_answer,
         client=app.state.client,
         model=app.state.model,
-        rerank_fn=app.state.reranker,
+        rerank_model=app.state.reranker,
         llm_client=app.state.llm_client,
     )
     yield
